@@ -27,6 +27,38 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // For now, since we're using base64 data URLs, we'll simulate the API call
+    // In a real implementation, you'd need to upload the file to a public URL first
+    console.log('Received audio data for analysis...');
+    
+    // Simulate processing time
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    // For demonstration purposes, we'll return mock data
+    // In a real app, you'd call the Replicate API here
+    const mockStems = {
+      drums_url: 'https://example.com/drums.mp3',
+      bass_url: 'https://example.com/bass.mp3',
+      other_url: 'https://example.com/other.mp3',
+      vocals_url: 'https://example.com/vocals.mp3'
+    };
+
+    // Mock analysis data
+    const analysis = {
+      key: "C Minor",
+      bpm: 124,
+      groove: "Swing"
+    };
+
+    // Return the complete analysis
+    return NextResponse.json({
+      status: "success",
+      analysis,
+      stems: mockStems
+    });
+
+    /* 
+    // Uncomment this section when you have a real public URL for the audio file
     // Call the Demucs model for stem separation
     console.log('Starting stem separation with Demucs...');
     const demucsOutput = await replicate.run(
@@ -46,7 +78,6 @@ export async function POST(request: NextRequest) {
     console.log('Demucs output:', demucsOutput);
 
     // Process the stems output
-    // The Demucs model returns an array of URLs for different stems
     let stems = {
       drums_url: '',
       bass_url: '',
@@ -55,8 +86,6 @@ export async function POST(request: NextRequest) {
     };
 
     if (Array.isArray(demucsOutput)) {
-      // Demucs typically returns files in this order: [drums, bass, other, vocals]
-      // We need to check the actual output structure and map accordingly
       stems = {
         drums_url: demucsOutput[0] || '',
         bass_url: demucsOutput[1] || '',
@@ -65,19 +94,12 @@ export async function POST(request: NextRequest) {
       };
     }
 
-    // For now, simulate key/tempo analysis (placeholder data)
-    const analysis = {
-      key: "C Minor",
-      bpm: 124,
-      groove: "Swing"
-    };
-
-    // Return the complete analysis
     return NextResponse.json({
       status: "success",
       analysis,
       stems
     });
+    */
 
   } catch (error) {
     console.error('Error processing audio:', error);

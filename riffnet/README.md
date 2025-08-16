@@ -5,10 +5,12 @@ A modern web application for AI-powered audio analysis built with Next.js 14 and
 ## Features
 
 - 🎵 **Audio File Upload**: Drag and drop interface for audio files (MP3, WAV, FLAC, M4A, AAC)
+- 🤖 **AI Analysis**: Powered by Replicate API for stem separation and audio analysis
 - 🎨 **Modern UI**: Clean, responsive design with dark theme
 - ⚡ **Next.js 14**: Built with the latest Next.js App Router
 - 🎨 **Tailwind CSS**: Styled with Tailwind CSS for consistent design
 - 📱 **Responsive**: Works seamlessly on desktop and mobile devices
+- 🎧 **Audio Preview**: Listen to separated stems with built-in audio players
 
 ## Tech Stack
 
@@ -17,6 +19,7 @@ A modern web application for AI-powered audio analysis built with Next.js 14 and
 - **Styling**: Tailwind CSS
 - **Icons**: Lucide React
 - **File Upload**: React Dropzone
+- **AI Processing**: Replicate API (Demucs for stem separation)
 
 ## Getting Started
 
@@ -24,6 +27,7 @@ A modern web application for AI-powered audio analysis built with Next.js 14 and
 
 - Node.js 18+ 
 - npm or yarn
+- Replicate API token
 
 ### Installation
 
@@ -38,25 +42,37 @@ cd riffnet
 npm install
 ```
 
-3. Run the development server:
+3. Set up environment variables:
+```bash
+# Copy the example environment file
+cp .env.example .env.local
+
+# Edit .env.local and add your Replicate API token
+REPLICATE_API_TOKEN=your_replicate_api_token_here
+```
+
+4. Run the development server:
 ```bash
 npm run dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Project Structure
 
 ```
 src/
 ├── app/
-│   ├── globals.css          # Global styles with Tailwind directives
-│   ├── layout.tsx           # Root layout component
-│   └── page.tsx             # Main page component
+│   ├── api/
+│   │   └── analyze/
+│   │       └── route.ts          # API endpoint for audio analysis
+│   ├── globals.css               # Global styles with Tailwind directives
+│   ├── layout.tsx                # Root layout component
+│   └── page.tsx                  # Main page component
 └── components/
-    ├── Header.tsx           # Header component with logo and app name
-    ├── UploadArea.tsx       # File upload component with drag & drop
-    └── ResultsDisplay.tsx   # Results display component
+    ├── Header.tsx                # Header component with logo and app name
+    ├── UploadArea.tsx            # File upload component with drag & drop
+    └── ResultsDisplay.tsx        # Results display with analysis and audio players
 ```
 
 ## Components
@@ -69,12 +85,49 @@ src/
 - Drag and drop file upload interface
 - Supports multiple audio file formats
 - Visual feedback for drag states
-- Professional styling with hover effects
+- Triggers analysis when files are uploaded
 
 ### ResultsDisplay
-- Placeholder for displaying analysis results
-- Clean, empty state design
-- Ready for future implementation
+- **Track Analysis Section**: Shows musical key, BPM, and groove type
+- **Separated Stems Section**: Audio players for drums, bass, vocals, and other tracks
+- Clean, organized layout with icons and descriptions
+
+## API Integration
+
+### `/api/analyze` Endpoint
+
+**Method**: `POST`
+
+**Request Body**:
+```json
+{
+  "audioUrl": "data:audio/mp3;base64,..."
+}
+```
+
+**Response**:
+```json
+{
+  "status": "success",
+  "analysis": {
+    "key": "C Minor",
+    "bpm": 124,
+    "groove": "Swing"
+  },
+  "stems": {
+    "drums_url": "https://...",
+    "bass_url": "https://...",
+    "other_url": "https://...",
+    "vocals_url": "https://..."
+  }
+}
+```
+
+### AI Processing
+
+The application uses Replicate's Demucs model for:
+- **Stem Separation**: Isolates drums, bass, vocals, and other instruments
+- **Audio Analysis**: Extracts musical key, tempo, and groove information
 
 ## Development
 
@@ -85,6 +138,10 @@ src/
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
 
+### Environment Variables
+
+- `REPLICATE_API_TOKEN` - Your Replicate API token for AI processing
+
 ### Styling
 
 The project uses Tailwind CSS with a custom configuration that includes:
@@ -92,13 +149,25 @@ The project uses Tailwind CSS with a custom configuration that includes:
 - Custom color variables
 - Responsive design utilities
 
+## Current Status
+
+- ✅ Basic UI structure and components
+- ✅ File upload with drag & drop
+- ✅ API integration with Replicate
+- ✅ Analysis results display
+- ✅ Audio player for separated stems
+- 🔄 Real-time upload progress (planned)
+- 🔄 User authentication (planned)
+- 🔄 File management system (planned)
+
 ## Future Enhancements
 
-- Audio file processing and analysis
-- Real-time upload progress
-- Results visualization
-- User authentication
-- File management system
+- Real-time upload progress indicators
+- User authentication and file management
+- Advanced audio analysis features
+- Stem download functionality
+- Collaborative features
+- Mobile app version
 
 ## License
 

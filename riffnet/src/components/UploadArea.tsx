@@ -4,11 +4,17 @@ import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Upload, Music } from 'lucide-react';
 
-export default function UploadArea() {
+interface UploadAreaProps {
+  onFileUpload: (file: File) => void;
+}
+
+export default function UploadArea({ onFileUpload }: UploadAreaProps) {
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    console.log('Files dropped:', acceptedFiles);
-    // TODO: Handle file upload logic
-  }, []);
+    if (acceptedFiles.length > 0) {
+      console.log('File selected:', acceptedFiles[0]);
+      onFileUpload(acceptedFiles[0]);
+    }
+  }, [onFileUpload]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
