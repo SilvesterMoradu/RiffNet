@@ -27,79 +27,72 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // For now, since we're using base64 data URLs, we'll simulate the API call
-    // In a real implementation, you'd need to upload the file to a public URL first
     console.log('Received audio data for analysis...');
     
-    // Simulate processing time
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    // Simulate processing time for better UX
+    await new Promise(resolve => setTimeout(resolve, 3000));
 
-    // For demonstration purposes, we'll return mock data
-    // In a real app, you'd call the Replicate API here
-    const mockStems = {
-      drums_url: 'https://example.com/drums.mp3',
-      bass_url: 'https://example.com/bass.mp3',
-      other_url: 'https://example.com/other.mp3',
-      vocals_url: 'https://example.com/vocals.mp3'
-    };
-
-    // Mock analysis data
+    // For now, return realistic mock data that demonstrates the concept
+    // In production, this would call the actual Replicate API
     const analysis = {
       key: "C Minor",
-      bpm: 124,
-      groove: "Swing"
+      bpm: 128,
+      groove: "Four-on-the-floor",
+      chordProgression: ["Cm", "Fm", "Bb", "Eb"],
+      rhythmicPattern: "Syncopated",
+      energy: "High",
+      genre: "Electronic"
     };
 
-    // Return the complete analysis
-    return NextResponse.json({
-      status: "success",
-      analysis,
-      stems: mockStems
-    });
+    // Mock stem URLs - in production these would come from Replicate
+    const stems = {
+      drums_url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav",
+      bass_url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav", 
+      other_url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav",
+      vocals_url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav"
+    };
 
-    /* 
-    // Uncomment this section when you have a real public URL for the audio file
-    // Call the Demucs model for stem separation
-    console.log('Starting stem separation with Demucs...');
-    const demucsOutput = await replicate.run(
-      "facebook/demucs:4a37f0456c53e4e01e80c6ab3d3557ae4fdd0d3c2d42c6f3d5f595b4783871f9",
+    // Mock compatible stems library
+    const compatibleStems = [
       {
-        input: {
-          audio: audioUrl,
-          model: "htdemucs",
-          shifts: 1,
-          split: true,
-          overlap: 0.25,
-          stem: "all"
-        }
+        id: 1,
+        name: "Deep House Bass",
+        type: "bass",
+        key: "C Minor",
+        bpm: 128,
+        url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav",
+        genre: "House",
+        energy: "High"
+      },
+      {
+        id: 2,
+        name: "Synth Pad Progression",
+        type: "pad",
+        key: "C Minor", 
+        bpm: 128,
+        url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav",
+        genre: "Electronic",
+        energy: "Medium"
+      },
+      {
+        id: 3,
+        name: "Percussion Loop",
+        type: "percussion",
+        key: "C Minor",
+        bpm: 128,
+        url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav",
+        genre: "House",
+        energy: "High"
       }
-    );
+    ];
 
-    console.log('Demucs output:', demucsOutput);
-
-    // Process the stems output
-    let stems = {
-      drums_url: '',
-      bass_url: '',
-      other_url: '',
-      vocals_url: ''
-    };
-
-    if (Array.isArray(demucsOutput)) {
-      stems = {
-        drums_url: demucsOutput[0] || '',
-        bass_url: demucsOutput[1] || '',
-        other_url: demucsOutput[2] || '',
-        vocals_url: demucsOutput[3] || ''
-      };
-    }
-
+    // Return the complete analysis with compatible stems
     return NextResponse.json({
       status: "success",
       analysis,
-      stems
+      stems,
+      compatibleStems
     });
-    */
 
   } catch (error) {
     console.error('Error processing audio:', error);

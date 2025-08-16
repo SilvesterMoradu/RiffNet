@@ -5,12 +5,27 @@ import Header from '@/components/Header';
 import UploadArea from '@/components/UploadArea';
 import ResultsDisplay from '@/components/ResultsDisplay';
 
+interface CompatibleStem {
+  id: number;
+  name: string;
+  type: string;
+  key: string;
+  bpm: number;
+  url: string;
+  genre: string;
+  energy: string;
+}
+
 interface AnalysisResult {
   status: string;
   analysis: {
     key: string;
     bpm: number;
     groove: string;
+    chordProgression: string[];
+    rhythmicPattern: string;
+    energy: string;
+    genre: string;
   };
   stems: {
     drums_url: string;
@@ -18,6 +33,7 @@ interface AnalysisResult {
     other_url: string;
     vocals_url: string;
   };
+  compatibleStems: CompatibleStem[];
 }
 
 export default function Home() {
@@ -34,10 +50,6 @@ export default function Home() {
       // Convert file to base64 data URL
       const base64Data = await fileToBase64(file);
       
-      // For now, we'll use a placeholder URL since Replicate needs a public URL
-      // In a real app, you'd upload to a service like AWS S3, Cloudinary, etc.
-      const audioUrl = base64Data; // This is a placeholder - you'd need a real URL
-
       console.log('Sending audio for analysis...');
       
       const response = await fetch('/api/analyze', {
@@ -45,7 +57,7 @@ export default function Home() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ audioUrl }),
+        body: JSON.stringify({ audioUrl: base64Data }),
       });
 
       if (!response.ok) {
@@ -89,9 +101,10 @@ export default function Home() {
             <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
               Welcome to RiffNet
             </h1>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Upload your audio files and get instant analysis. Our AI-powered platform 
-              helps you understand and enhance your music.
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+              Upload your musical idea and let AI find the perfect compatible stems. 
+              Get instant analysis of key, tempo, and groove, then discover harmonically 
+              and rhythmically matched sounds from our curated library.
             </p>
           </div>
 
@@ -104,11 +117,11 @@ export default function Home() {
               <div className="inline-flex items-center space-x-2">
                 <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
                 <span className="text-gray-600 dark:text-gray-400">
-                  Analyzing your audio file...
+                  Analyzing your musical idea...
                 </span>
               </div>
               <p className="text-sm text-gray-500 dark:text-gray-500 mt-2">
-                This may take a few moments
+                Detecting key, tempo, and finding compatible stems
               </p>
             </div>
           )}
