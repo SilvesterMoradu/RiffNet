@@ -11,7 +11,7 @@ interface UploadAreaProps {
 export default function UploadArea({ onFileUpload }: UploadAreaProps) {
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
-      console.log('File selected:', acceptedFiles[0]);
+      console.log('File selected:', acceptedFiles[0].name);
       onFileUpload(acceptedFiles[0]);
     }
   }, [onFileUpload]);
@@ -60,7 +60,7 @@ export default function UploadArea({ onFileUpload }: UploadAreaProps) {
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">
               {isDragActive 
-                ? 'Release to upload' 
+                ? 'Release to analyze' 
                 : 'Drop your audio file here, or click to browse'
               }
             </p>

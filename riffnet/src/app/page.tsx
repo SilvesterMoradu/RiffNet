@@ -47,47 +47,102 @@ export default function Home() {
     setAnalysisResult(null);
 
     try {
-      // Convert file to base64 data URL
-      const base64Data = await fileToBase64(file);
+      console.log('Processing file:', file.name);
       
-      console.log('Sending audio for analysis...');
-      
-      const response = await fetch('/api/analyze', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      // Simulate processing time
+      await new Promise(resolve => setTimeout(resolve, 3000));
+
+      // Mock analysis data
+      const mockResult: AnalysisResult = {
+        status: "success",
+        analysis: {
+          key: "C Minor",
+          bpm: 128,
+          groove: "Four-on-the-floor",
+          chordProgression: ["Cm", "Fm", "Bb", "Eb"],
+          rhythmicPattern: "Syncopated",
+          energy: "High",
+          genre: "Electronic"
         },
-        body: JSON.stringify({ audioUrl: base64Data }),
-      });
+        stems: {
+          drums_url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav",
+          bass_url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav",
+          other_url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav",
+          vocals_url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav"
+        },
+        compatibleStems: [
+          {
+            id: 1,
+            name: "Deep House Bass",
+            type: "bass",
+            key: "C Minor",
+            bpm: 128,
+            url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav",
+            genre: "House",
+            energy: "High"
+          },
+          {
+            id: 2,
+            name: "Synth Pad Progression",
+            type: "pad",
+            key: "C Minor",
+            bpm: 128,
+            url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav",
+            genre: "Electronic",
+            energy: "Medium"
+          },
+          {
+            id: 3,
+            name: "Percussion Loop",
+            type: "percussion",
+            key: "C Minor",
+            bpm: 128,
+            url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav",
+            genre: "House",
+            energy: "High"
+          },
+          {
+            id: 4,
+            name: "Melodic Lead",
+            type: "lead",
+            key: "C Minor",
+            bpm: 128,
+            url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav",
+            genre: "Electronic",
+            energy: "Medium"
+          },
+          {
+            id: 5,
+            name: "Atmospheric Pad",
+            type: "pad",
+            key: "C Minor",
+            bpm: 128,
+            url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav",
+            genre: "Ambient",
+            energy: "Low"
+          },
+          {
+            id: 6,
+            name: "Rhythm Guitar",
+            type: "guitar",
+            key: "C Minor",
+            bpm: 128,
+            url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav",
+            genre: "Rock",
+            energy: "High"
+          }
+        ]
+      };
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.json();
-      
-      if (result.error) {
-        throw new Error(result.error);
-      }
-
-      setAnalysisResult(result);
-      console.log('Analysis completed:', result);
+      setAnalysisResult(mockResult);
+      console.log('Analysis completed:', mockResult);
       
     } catch (err) {
       console.error('Analysis failed:', err);
-      setError(err instanceof Error ? err.message : 'Failed to analyze audio file');
+      setError('Failed to analyze audio file');
     } finally {
       setIsAnalyzing(false);
     }
-  };
-
-  const fileToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = error => reject(error);
-    });
   };
 
   return (
