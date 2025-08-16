@@ -20,6 +20,7 @@ A modern web application for AI-powered audio analysis built with Next.js 14 and
 - **Icons**: Lucide React
 - **File Upload**: React Dropzone
 - **AI Processing**: Replicate API (Demucs for stem separation)
+- **Deployment**: Vercel
 
 ## Getting Started
 
@@ -28,6 +29,7 @@ A modern web application for AI-powered audio analysis built with Next.js 14 and
 - Node.js 18+ 
 - npm or yarn
 - Replicate API token
+- Vercel account (for deployment)
 
 ### Installation
 
@@ -47,8 +49,9 @@ npm install
 # Copy the example environment file
 cp .env.example .env.local
 
-# Edit .env.local and add your Replicate API token
+# Edit .env.local and add your API tokens
 REPLICATE_API_TOKEN=your_replicate_api_token_here
+VERCEL_API_TOKEN=your_vercel_api_token_here
 ```
 
 4. Run the development server:
@@ -57,6 +60,38 @@ npm run dev
 ```
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Deployment
+
+### Deploy to Vercel
+
+1. **Using Vercel CLI** (recommended):
+```bash
+# Install Vercel CLI globally
+npm install -g vercel
+
+# Login to Vercel
+vercel login
+
+# Deploy from project directory
+vercel
+
+# For production deployment
+vercel --prod
+```
+
+2. **Using Vercel Dashboard**:
+   - Push your code to GitHub
+   - Connect your repository to Vercel
+   - Add environment variables in Vercel dashboard
+   - Deploy automatically
+
+### Environment Variables for Production
+
+Make sure to add these environment variables in your Vercel project settings:
+
+- `REPLICATE_API_TOKEN` - Your Replicate API token
+- `VERCEL_API_TOKEN` - Your Vercel API token (optional, for CLI operations)
 
 ## Project Structure
 
@@ -141,6 +176,7 @@ The application uses Replicate's Demucs model for:
 ### Environment Variables
 
 - `REPLICATE_API_TOKEN` - Your Replicate API token for AI processing
+- `VERCEL_API_TOKEN` - Your Vercel API token for deployment
 
 ### Styling
 
@@ -156,6 +192,7 @@ The project uses Tailwind CSS with a custom configuration that includes:
 - ✅ API integration with Replicate
 - ✅ Analysis results display
 - ✅ Audio player for separated stems
+- ✅ Vercel deployment configuration
 - 🔄 Real-time upload progress (planned)
 - 🔄 User authentication (planned)
 - 🔄 File management system (planned)
